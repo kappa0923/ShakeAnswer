@@ -1,13 +1,8 @@
-package com.kappa0923.android.app.shakeanswer.activity;
+package com.kappa0923.android.app.shakeanswer;
 
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 
-import com.kappa0923.android.app.shakeanswer.R;
-
-/**
- * アプリの起動を管理するクラス
- */
 public class MainActivity extends AppCompatActivity {
 
     @Override
