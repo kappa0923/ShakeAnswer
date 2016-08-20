@@ -1,4 +1,4 @@
-package com.kappa0923.android.app.shakeanswer.activity.Service;
+package com.kappa0923.android.app.shakeanswer.services;
 
 import android.app.Service;
 import android.content.Intent;

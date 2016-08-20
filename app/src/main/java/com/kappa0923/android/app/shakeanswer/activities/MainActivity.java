@@ -1,4 +1,4 @@
-package com.kappa0923.android.app.shakeanswer.activity;
+package com.kappa0923.android.app.shakeanswer.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

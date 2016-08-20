@@ -1,4 +1,4 @@
-package com.kappa0923.android.app.shakeanswer.activity.fragment;
+package com.kappa0923.android.app.shakeanswer.fragment;
 
 
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package com.kappa0923.android.app.shakeanswer.activity.common;
+package com.kappa0923.android.app.shakeanswer.common;
 
 import android.util.Log;
 
