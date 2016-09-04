@@ -32,12 +32,16 @@ public class CallReceiver extends BroadcastReceiver {
             }
         };
 
-        TelephonyManager telephonyManager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
     }
 
-    public void setCallStateListener(CallStateListener callStateListener) {
+    public void registerCallStateListener(CallStateListener callStateListener) {
         mCallStateListener = callStateListener;
+    }
+
+    public void unregistCallStateListener() {
+        mCallStateListener = null;
     }
 
     public interface CallStateListener {
