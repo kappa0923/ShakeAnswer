@@ -1,0 +1,15 @@
+machine:
+  post:
+    - sudo service mysql stop
+    - sudo service postgresql stop
+  environment:
+    GRADLE_OPTS: -Xmx4G -Dorg.gradle.daemon=true
+
+checkout:
+  post:
+    - chmod +x ./gradlew
+
+test:
+  override:
+    - ./gradlew assembleDebug
+    - cp -r app/build/outputs/apk/*.apk $CIRCLE_ARTIFACTS
