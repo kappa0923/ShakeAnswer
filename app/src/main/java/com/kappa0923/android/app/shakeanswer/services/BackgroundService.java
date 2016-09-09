@@ -14,7 +14,7 @@ import com.kappa0923.android.app.shakeanswer.common.CallReceiver;
  * 管理するためのクラス
  */
 public class BackgroundService extends Service implements CallReceiver.CallStateListener {
-    private CallReceiver mCallReceiver;
+    private CallReceiver mCallReceiver = new CallReceiver();
 
     @Nullable
     @Override
@@ -24,11 +24,7 @@ public class BackgroundService extends Service implements CallReceiver.CallState
 
     @Override
     public void onCreate() {
-        mCallReceiver = new CallReceiver();
-        mCallReceiver.registerCallStateListener(this);
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(getString(R.string.action_phone_state));
-        registerReceiver(mCallReceiver, filter);
+        registerCallReceiver();
     }
 
     @Override
@@ -49,5 +45,15 @@ public class BackgroundService extends Service implements CallReceiver.CallState
     @Override
     public void onIdle() {
 
+    }
+
+    /**
+     * 着信を検出するReceiverを登録する
+     */
+    private void registerCallReceiver() {
+        mCallReceiver.registerCallStateListener(this);
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(getString(R.string.action_phone_state));
+        registerReceiver(mCallReceiver, filter);
     }
 }

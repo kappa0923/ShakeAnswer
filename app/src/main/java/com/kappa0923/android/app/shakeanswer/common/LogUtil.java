@@ -5,7 +5,7 @@ import android.util.Log;
 /**
  * 自作Utilクラス
  */
-public class MyUtil {
+public class LogUtil {
     private static final String TAG = "log_shake_answer";
 
     /**
