@@ -1,4 +1,8 @@
 general:
+  branches:
+    only:
+      - /feature*/
+
   artifacts:
     - "app/build/outputs/apk/app-debug.apk"
 
@@ -11,17 +15,10 @@ machine:
 
 checkout:
   post:
+    - git checkout -b develop origin/develop
+    - git pull origin $CIRCLE_BRANCH
     - chmod +x ./gradlew
 
 test:
   override:
-    - echo "Nothing to do here"
-
-deployment:
-  feature:
-    branch: /feature\/*/
-    commands:
-    - git checkout -b develop origin/develop
-    - git pull origin $CIRCLE_BRANCH
     - ./gradlew assembleDebug
-    - cp -r app/build/outputs/apk/*.apk $CIRCLE_ARTIFACTS
