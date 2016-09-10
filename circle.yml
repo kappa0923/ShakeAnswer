@@ -1,3 +1,7 @@
+general:
+  artifacts:
+    - "app/build/outputs/apk/app-debug.apk"
+
 machine:
   post:
     - sudo service mysql stop
@@ -11,5 +15,12 @@ checkout:
 
 test:
   override:
+    - echo "Nothing to do here"
+
+deploymrnt:
+  feature:
+    branch: /feature\/*/
+    - git checkout -b develop origin/develop
+    - git pull origin $CIRCLE_BRANCH
     - ./gradlew assembleDebug
     - cp -r app/build/outputs/apk/*.apk $CIRCLE_ARTIFACTS
