@@ -20,6 +20,7 @@ test:
 deploymrnt:
   feature:
     branch: /feature\/*/
+    commands:
     - git checkout -b develop origin/develop
     - git pull origin $CIRCLE_BRANCH
     - ./gradlew assembleDebug
