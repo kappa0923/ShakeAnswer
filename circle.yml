@@ -17,7 +17,7 @@ test:
   override:
     - echo "Nothing to do here"
 
-deploymrnt:
+deployment:
   feature:
     branch: /feature\/*/
     commands:
