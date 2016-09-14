@@ -14,8 +14,12 @@ machine:
     GRADLE_OPTS: -Xmx4G -Dorg.gradle.daemon=true
 
 checkout:
+  override:
+    - git clone git@github.com:kappa0923/ShakeAnswer.git ./tmp -b $CIRCLE_BRANCH
+    - rm -rf .git
+    - mv ./tmp/.git .git
   post:
-    - git checkout -b develop origin/develop
+    - git checkout develop
     - git pull origin $CIRCLE_BRANCH
     - chmod +x ./gradlew
 
