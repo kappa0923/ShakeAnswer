@@ -15,25 +15,23 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import com.kappa0923.android.app.shakeanswer.R;
-import com.kappa0923.android.app.shakeanswer.services.BackgroundService;
+import com.kappa0923.android.app.shakeanswer.services.AnswerPhoneService;
 
 import java.util.List;
 
 /**
- * 起動時画面の表示要Fragment
+ * 起動時画面の表示用のFragment
  */
 public class MainFragment extends Fragment {
 
 
     public MainFragment() {
-        // Required empty public constructor
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_main, container, false);
     }
 
@@ -41,18 +39,7 @@ public class MainFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Switch serviceSwitch = (Switch)view.findViewById(R.id.service_switch);
-        serviceSwitch.setChecked(isServiceRunning());
-        serviceSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    getActivity().startService(new Intent(getContext(), BackgroundService.class));
-                } else {
-                    getActivity().stopService(new Intent(getContext(), BackgroundService.class));
-                }
-            }
-        });
+        setupLayout(view);
     }
 
     /**
@@ -63,10 +50,29 @@ public class MainFragment extends Fragment {
         ActivityManager manager = (ActivityManager)getActivity().getSystemService(Context.ACTIVITY_SERVICE);
         List<RunningServiceInfo> serviceInfoList = manager.getRunningServices(Integer.MAX_VALUE);
         for (RunningServiceInfo info : serviceInfoList) {
-            if (TextUtils.equals(info.service.getClassName(), BackgroundService.class.getName())) {
+            if (TextUtils.equals(info.service.getClassName(), AnswerPhoneService.class.getName())) {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * メイン画面のレイアウトの初期化
+     * @param view 親view
+     */
+    private void setupLayout(View view) {
+        Switch serviceSwitch = (Switch)view.findViewById(R.id.service_switch);
+        serviceSwitch.setChecked(isServiceRunning());
+        serviceSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    getActivity().startService(new Intent(getContext(), AnswerPhoneService.class));
+                } else {
+                    getActivity().stopService(new Intent(getContext(), AnswerPhoneService.class));
+                }
+            }
+        });
     }
 }

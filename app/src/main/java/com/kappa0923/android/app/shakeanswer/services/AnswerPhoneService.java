@@ -13,7 +13,7 @@ import com.kappa0923.android.app.shakeanswer.common.CallReceiver;
  * ブロードキャストと端末の動作を検出するクラスを
  * 管理するためのクラス
  */
-public class BackgroundService extends Service implements CallReceiver.CallStateListener {
+public class AnswerPhoneService extends Service implements CallReceiver.CallStateListener {
     private CallReceiver mCallReceiver = new CallReceiver();
 
     @Nullable
