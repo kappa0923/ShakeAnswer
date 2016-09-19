@@ -35,14 +35,11 @@ public class BackgroundService extends Service implements CallReceiver.CallState
 
     @Override
     public void onRinging() {
-        Intent buttonDown = new Intent(Intent.ACTION_MEDIA_BUTTON)
-                .putExtra(Intent.EXTRA_KEY_EVENT,
-                        new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_HEADSETHOOK));
-        Intent buttonUp = new Intent(Intent.ACTION_MEDIA_BUTTON)
-                .putExtra(Intent.EXTRA_KEY_EVENT,
-                        new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_HEADSETHOOK));
-        getApplicationContext().sendOrderedBroadcast(buttonDown, null);
-        getApplicationContext().sendOrderedBroadcast(buttonUp, null);
+        Intent btnUp = new Intent(Intent.ACTION_MEDIA_BUTTON);
+        btnUp.putExtra(Intent.EXTRA_KEY_EVENT,
+                new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_HEADSETHOOK));
+
+        sendOrderedBroadcast(btnUp, "android.permission.CALL_PRIVILEGED");
     }
 
     @Override
