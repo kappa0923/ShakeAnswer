@@ -9,13 +9,18 @@ import android.view.KeyEvent;
 
 import com.kappa0923.android.app.shakeanswer.R;
 import com.kappa0923.android.app.shakeanswer.common.CallReceiver;
+import com.kappa0923.android.app.shakeanswer.common.ShakeManager;
 
 /**
  * ブロードキャストと端末の動作を検出するクラスを
  * 管理するためのクラス
  */
-public class AnswerPhoneService extends Service implements CallReceiver.CallStateListener {
+public class AnswerPhoneService extends Service implements CallReceiver.CallStateListener, ShakeManager.ShakeListener {
+    private static final int SPECIFIED_COUNT = 10;
+
     private CallReceiver mCallReceiver = new CallReceiver();
+    private ShakeManager mShakeManager;
+    private int mShakeCount;
 
     @Nullable
     @Override
@@ -26,6 +31,7 @@ public class AnswerPhoneService extends Service implements CallReceiver.CallStat
     @Override
     public void onCreate() {
         registerCallReceiver();
+        initService();
     }
 
     @Override
@@ -35,21 +41,41 @@ public class AnswerPhoneService extends Service implements CallReceiver.CallStat
 
     @Override
     public void onRinging() {
-        Intent btnUp = new Intent(Intent.ACTION_MEDIA_BUTTON);
-        btnUp.putExtra(Intent.EXTRA_KEY_EVENT,
-                new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_HEADSETHOOK));
+        if (mShakeManager == null) {
+            mShakeManager = new ShakeManager();
+            mShakeManager.setOnShakeListener(this);
+            mShakeManager.startShakeListener(getApplicationContext());
+        }
 
-        sendOrderedBroadcast(btnUp, "android.permission.CALL_PRIVILEGED");
     }
 
     @Override
     public void onOffhook() {
-
+        initService();
     }
 
     @Override
     public void onIdle() {
+        initService();
+    }
 
+    @Override
+    public void onShake() {
+        mShakeCount++;
+        if (mShakeCount > SPECIFIED_COUNT) {
+            doCatchPhone();
+        }
+    }
+
+    /**
+     * Serviceの初期化
+     */
+    private void initService() {
+        if (mShakeManager != null) {
+            mShakeManager.endShakeListener();
+            mShakeManager = null;
+        }
+        mShakeCount = 0;
     }
 
     /**
@@ -60,5 +86,16 @@ public class AnswerPhoneService extends Service implements CallReceiver.CallStat
         IntentFilter filter = new IntentFilter();
         filter.addAction(getString(R.string.action_phone_state));
         registerReceiver(mCallReceiver, filter);
+    }
+
+    /**
+     * 着信に応答する
+     */
+    private void doCatchPhone() {
+        Intent btnUp = new Intent(Intent.ACTION_MEDIA_BUTTON);
+        btnUp.putExtra(Intent.EXTRA_KEY_EVENT,
+                new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_HEADSETHOOK));
+        sendOrderedBroadcast(btnUp, "android.permission.CALL_PRIVILEGED");
+        initService();
     }
 }

@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.kappa0923.android.app.shakeanswer.R;
-import com.kappa0923.android.app.shakeanswer.services.BackgroundService;
+import com.kappa0923.android.app.shakeanswer.services.AnswerPhoneService;
 
 /**
  * アプリの起動を管理するクラス
@@ -17,6 +17,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        startService(new Intent(this, BackgroundService.class));
+        startService(new Intent(this, AnswerPhoneService.class));
     }
 }
