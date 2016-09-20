@@ -29,6 +29,5 @@ test:
 
 deployment:
   develop:
-    branch: /*/
     commands:
       - curl -F "file=@app/build/outputs/apk/app-debug.apk" -F "token=${DEPLOY_GATE_API_KEY}" -F "message=deploy test" https://deploygate.com/api/users/${DEPLOY_GATE_USER_NAME}/apps
