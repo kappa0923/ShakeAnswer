@@ -7,12 +7,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.ToggleButton;
 
 import com.kappa0923.android.app.shakeanswer.R;
 import com.kappa0923.android.app.shakeanswer.services.AnswerPhoneService;
@@ -46,7 +48,7 @@ public class MainFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        Switch serviceSwitch = (Switch)getActivity().findViewById(R.id.service_switch);
+        ToggleButton serviceSwitch = (ToggleButton) getActivity().findViewById(R.id.service_switch);
         serviceSwitch.setChecked(isServiceRunning());
     }
 
@@ -70,7 +72,7 @@ public class MainFragment extends Fragment {
      * @param view 親view
      */
     private void setupLayout(View view) {
-        Switch serviceSwitch = (Switch)view.findViewById(R.id.service_switch);
+        ToggleButton serviceSwitch = (ToggleButton) view.findViewById(R.id.service_switch);
         serviceSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
