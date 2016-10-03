@@ -7,13 +7,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.SwitchCompat;
+import android.support.v7.widget.AppCompatSpinner;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
-import android.widget.Switch;
 import android.widget.ToggleButton;
 
 import com.kappa0923.android.app.shakeanswer.R;
@@ -83,5 +83,10 @@ public class MainFragment extends Fragment {
                 }
             }
         });
+
+        AppCompatSpinner countSpinner = (AppCompatSpinner)view.findViewById(R.id.count_spinner);
+        ArrayAdapter<CharSequence> countAdapter = ArrayAdapter.createFromResource(getContext(), R.array.count_array, R.layout.spinner_item);
+        countAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        countSpinner.setAdapter(countAdapter);
     }
 }
