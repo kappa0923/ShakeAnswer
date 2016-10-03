@@ -10,6 +10,7 @@ import android.view.KeyEvent;
 import com.kappa0923.android.app.shakeanswer.R;
 import com.kappa0923.android.app.shakeanswer.common.CallReceiver;
 import com.kappa0923.android.app.shakeanswer.common.ShakeManager;
+import com.kappa0923.android.app.shakeanswer.common.NotificationController;
 
 /**
  * ブロードキャストと端末の動作を検出するクラスを
@@ -32,11 +33,13 @@ public class AnswerPhoneService extends Service implements CallReceiver.CallStat
     public void onCreate() {
         registerCallReceiver();
         initService();
+        new NotificationController().startNotification(getApplicationContext());
     }
 
     @Override
     public void onDestroy() {
         unregisterReceiver(mCallReceiver);
+        new NotificationController().cancelNotification(getApplicationContext());
     }
 
     @Override
@@ -46,7 +49,6 @@ public class AnswerPhoneService extends Service implements CallReceiver.CallStat
             mShakeManager.setOnShakeListener(this);
             mShakeManager.startShakeListener(getApplicationContext());
         }
-
     }
 
     @Override

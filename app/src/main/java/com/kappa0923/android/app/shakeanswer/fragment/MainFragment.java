@@ -42,6 +42,14 @@ public class MainFragment extends Fragment {
         setupLayout(view);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Switch serviceSwitch = (Switch)getActivity().findViewById(R.id.service_switch);
+        serviceSwitch.setChecked(isServiceRunning());
+    }
+
     /**
      * サービスが起動中かどうかを検出
      * @return {@code true}起動中
@@ -63,7 +71,6 @@ public class MainFragment extends Fragment {
      */
     private void setupLayout(View view) {
         Switch serviceSwitch = (Switch)view.findViewById(R.id.service_switch);
-        serviceSwitch.setChecked(isServiceRunning());
         serviceSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
