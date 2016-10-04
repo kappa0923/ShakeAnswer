@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.view.KeyEvent;
 
@@ -17,7 +18,7 @@ import com.kappa0923.android.app.shakeanswer.common.NotificationController;
  * 管理するためのクラス
  */
 public class AnswerPhoneService extends Service implements CallReceiver.CallStateListener, ShakeManager.ShakeListener {
-    private static final int SPECIFIED_COUNT = 10;
+    private static int SPECIFIED_COUNT = 10;
 
     private CallReceiver mCallReceiver = new CallReceiver();
     private ShakeManager mShakeManager;
@@ -45,6 +46,8 @@ public class AnswerPhoneService extends Service implements CallReceiver.CallStat
     @Override
     public void onRinging() {
         if (mShakeManager == null) {
+            SPECIFIED_COUNT = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                    .getInt(ShakeManager.PREF_KEY_SHAKE_COUNT, 5);
             mShakeManager = new ShakeManager();
             mShakeManager.setOnShakeListener(this);
             mShakeManager.startShakeListener(getApplicationContext());
