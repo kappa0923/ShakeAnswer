@@ -6,15 +6,22 @@ import android.app.ActivityManager.RunningServiceInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatSpinner;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
-import android.widget.Switch;
+import android.widget.ToggleButton;
 
 import com.kappa0923.android.app.shakeanswer.R;
+import com.kappa0923.android.app.shakeanswer.common.LogUtil;
+import com.kappa0923.android.app.shakeanswer.common.ShakeManager;
 import com.kappa0923.android.app.shakeanswer.services.AnswerPhoneService;
 
 import java.util.List;
@@ -22,7 +29,7 @@ import java.util.List;
 /**
  * 起動時画面の表示用のFragment
  */
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
 
     public MainFragment() {
@@ -46,7 +53,7 @@ public class MainFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        Switch serviceSwitch = (Switch)getActivity().findViewById(R.id.service_switch);
+        ToggleButton serviceSwitch = (ToggleButton) getActivity().findViewById(R.id.service_switch);
         serviceSwitch.setChecked(isServiceRunning());
     }
 
@@ -70,7 +77,7 @@ public class MainFragment extends Fragment {
      * @param view 親view
      */
     private void setupLayout(View view) {
-        Switch serviceSwitch = (Switch)view.findViewById(R.id.service_switch);
+        ToggleButton serviceSwitch = (ToggleButton) view.findViewById(R.id.service_switch);
         serviceSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -81,5 +88,27 @@ public class MainFragment extends Fragment {
                 }
             }
         });
+
+        String shakeCount = Integer.toString(PreferenceManager.getDefaultSharedPreferences(getContext())
+                .getInt(ShakeManager.PREF_KEY_SHAKE_COUNT, 5));
+        AppCompatSpinner countSpinner = (AppCompatSpinner)view.findViewById(R.id.count_spinner);
+        ArrayAdapter<CharSequence> countAdapter = ArrayAdapter.createFromResource(getContext(), R.array.count_array, R.layout.spinner_item);
+        countAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        countSpinner.setAdapter(countAdapter);
+        countSpinner.setSelection(countAdapter.getPosition(shakeCount));
+        countSpinner.setOnItemSelectedListener(this);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        int shakeCount = Integer.parseInt((String)parent.getSelectedItem());
+        PreferenceManager.getDefaultSharedPreferences(getContext())
+                .edit()
+                .putInt(ShakeManager.PREF_KEY_SHAKE_COUNT, shakeCount)
+                .apply();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
     }
 }

@@ -10,6 +10,7 @@ import android.hardware.SensorManager;
  * 端末が振られた時のリスナを管理するクラス
  */
 public class ShakeManager implements SensorEventListener {
+    public static final String PREF_KEY_SHAKE_COUNT = "1d19546f-d05d-470d-9715-922b41b18db6";
     private final static int TIME_THRESHOLD = 100;
     private final static int VELOCITY_THRESHOLD = 30;
     private SensorManager mSensorManager;
