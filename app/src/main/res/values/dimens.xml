@@ -1,9 +1,0 @@
-<resources>
-    <!-- レイアウトサイズ -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="spinner_padding">16dp</dimen>
-    <dimen name="spinner_margin_top">72dp</dimen>
-    <!-- 文字サイズ -->
-    <dimen name="text_size_large_large_material">28sp</dimen>
-</resources>
