@@ -1,0 +1,30 @@
+general:
+  branches:
+    only:
+      - /feature*/
+
+  artifacts:
+    - "app/build/outputs/apk/app-debug.apk"
+
+machine:
+  post:
+    - sudo service mysql stop
+    - sudo service postgresql stop
+  environment:
+    GRADLE_OPTS: -Xmx4G -Dorg.gradle.daemon=true
+
+checkout:
+  override:
+    - git clone git@github.com:kappa0923/ShakeAnswer.git ./tmp -b $CIRCLE_BRANCH
+    - rm -rf .git
+    - mv ./tmp/.git .git
+  post:
+    - git checkout develop
+    - git pull origin $CIRCLE_BRANCH
+    - chmod +x ./gradlew
+
+test:
+  override:
+    - ./gradlew assembleDebug
+  post:
+    - curl -F "file=@app/build/outputs/apk/app-debug.apk" -F "token=${DEPLOY_GATE_API_KEY}" -F "message=deploy test" https://deploygate.com/api/users/${DEPLOY_GATE_USER_NAME}/apps
